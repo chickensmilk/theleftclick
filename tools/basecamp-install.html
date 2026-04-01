@@ -654,7 +654,7 @@
     <div class="hero-badges">
       <div class="badge"><span class="badge-dot"></span> Works on any Mac</div>
       <div class="badge">About 10 minutes</div>
-      <div class="badge">5 simple steps</div>
+      <div class="badge">6 simple steps</div>
     </div>
   </section>
 
@@ -694,12 +694,62 @@
           </div>
           <code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
         </div>
-        <p class="note">It will ask for your Mac password. Type it and hit Enter — you won't see the characters appear, that's normal. Wait until you see the $ symbol again before moving on.</p>
+        <p class="note">After pasting, here's exactly what will happen — don't panic, this is all normal:</p>
         <div class="verify">
+          <span class="verify-icon">1️⃣</span>
+          <div class="verify-text">
+            <strong>It asks for your password.</strong>
+            Type your Mac login password and hit Enter. You won't see any characters appear as you type — that's normal.
+          </div>
+        </div>
+        <div class="verify" style="margin-top:8px;">
+          <span class="verify-icon">2️⃣</span>
+          <div class="verify-text">
+            <strong>It shows what it will install and asks you to press Enter.</strong>
+            Read through it if you like, then press <strong>Return/Enter</strong> to confirm and let it continue.
+          </div>
+        </div>
+        <div class="verify" style="margin-top:8px;">
+          <span class="verify-icon">3️⃣</span>
+          <div class="verify-text">
+            <strong>It installs Xcode Command Line Tools automatically.</strong>
+            This can take several minutes. You'll see it downloading and installing on its own — just wait, no action needed.
+          </div>
+        </div>
+        <div class="verify" style="margin-top:8px;">
+          <span class="verify-icon">4️⃣</span>
+          <div class="verify-text">
+            <strong>It finishes and shows "Installation successful!" and "Next steps".</strong>
+            You must run these 3 commands before moving on. Copy and paste them one at a time:
+          </div>
+        </div>
+        <div class="code-block" style="margin-top:8px;">
+          <div class="code-label">
+            <span>Terminal — run after install completes (line 1)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>echo >> ~/.zprofile</code>
+        </div>
+        <div class="code-block" style="margin-top:8px;">
+          <div class="code-label">
+            <span>Terminal — run after install completes (line 2)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>echo 'eval "$(/opt/homebrew/bin/brew shellenv zsh)"' >> ~/.zprofile</code>
+        </div>
+        <div class="code-block" style="margin-top:8px;">
+          <div class="code-label">
+            <span>Terminal — run after install completes (line 3)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>eval "$(/opt/homebrew/bin/brew shellenv zsh)"</code>
+        </div>
+        <p class="note">These commands add Homebrew to your PATH so your Mac knows where to find it. Without them, the next steps will fail.</p>
+        <div class="verify" style="margin-top:8px;">
           <span class="verify-icon">✅</span>
           <div class="verify-text">
             <strong>Already installed?</strong>
-            It will say "Homebrew is already installed" and stop. That's fine — move to Step 2.
+            It will say "Homebrew is already installed" and stop. That's fine — skip the 3 commands above and move to Step 2.
           </div>
         </div>
       </div>
@@ -708,6 +758,38 @@
     <!-- STEP 2 -->
     <div class="step">
       <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-where terminal">⬛ Terminal</div>
+        <h3>Fix Permissions &amp; Update Homebrew</h3>
+        <p>This prevents errors in the next steps. Run these <strong>one at a time</strong>, hitting Enter after each.</p>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal — run first</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>sudo chown -R $(whoami) /usr/local/var/homebrew</code>
+        </div>
+        <p class="note">It will ask for your Mac password. Type it and hit Enter — you won't see the characters appear, that's normal.</p>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal — run second</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>brew update</code>
+        </div>
+        <div class="verify">
+          <span class="verify-icon">✅</span>
+          <div class="verify-text">
+            <strong>You should see:</strong>
+            "Already up-to-date." or a list of updated packages. Either is fine — move to Step 3.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-where terminal">⬛ Terminal</div>
         <h3>Install Node.js</h3>
@@ -729,9 +811,9 @@
       </div>
     </div>
 
-    <!-- STEP 3 -->
+    <!-- STEP 4 -->
     <div class="step">
-      <div class="step-num">3</div>
+      <div class="step-num">4</div>
       <div class="step-body">
         <div class="step-where terminal">⬛ Terminal</div>
         <h3>Install the Basecamp CLI</h3>
@@ -760,9 +842,9 @@
       </div>
     </div>
 
-    <!-- STEP 4 -->
+    <!-- STEP 5 -->
     <div class="step">
-      <div class="step-num">4</div>
+      <div class="step-num">5</div>
       <div class="step-body">
         <div class="step-where browser">🌐 Terminal + Browser</div>
         <h3>Log into Basecamp</h3>
@@ -785,9 +867,9 @@
       </div>
     </div>
 
-    <!-- STEP 5 -->
+    <!-- STEP 6 -->
     <div class="step">
-      <div class="step-num">5</div>
+      <div class="step-num">6</div>
       <div class="step-body">
         <div class="step-where claude">◆ Terminal</div>
         <h3>Connect to Claude Code</h3>
