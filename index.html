@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeftClick — Simple AI & Automation Tools</title>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --brand: #3B72B8;
+      --brand-dark: #2d5a96;
+      --brand-light: #eef3fb;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #86868b;
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f7;
+      --bg-card: #fbfbfd;
+      --border: #d2d2d7;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    /* SVG logo mark */
+    .nav-logo svg { display: block; }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+    }
+
+    nav ul a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--text-primary); }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--brand) !important;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--bg-secondary);
+      text-align: center;
+      padding: 110px 24px 90px;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(44px, 7vw, 80px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.04;
+      color: var(--text-primary);
+      margin-bottom: 22px;
+    }
+
+    .hero h1 span { color: var(--brand); }
+
+    .hero p {
+      font-size: clamp(17px, 2vw, 21px);
+      color: var(--text-secondary);
+      max-width: 580px;
+      margin: 0 auto 44px;
+      line-height: 1.55;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 13px 26px;
+      border-radius: 980px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--brand);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 13px 26px;
+      border-radius: 980px;
+      border: 1.5px solid var(--brand);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--brand-light);
+      transform: translateY(-1px);
+    }
+
+    /* ── SECTION SHARED ── */
+    section {
+      padding: 96px 24px;
+    }
+
+    .section-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 540px;
+      line-height: 1.55;
+      margin-bottom: 56px;
+    }
+
+    /* ── TOOLS GRID ── */
+    .tools-section { background: var(--bg); }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.09);
+      border-color: var(--brand);
+    }
+
+    .tool-card.featured {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 40px;
+      background: var(--brand-light);
+      border-color: rgba(59,114,184,0.25);
+    }
+
+    .tool-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tool-icon svg { color: #fff; }
+
+    .tool-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--brand);
+      background: rgba(59,114,184,0.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .tool-name {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+    }
+
+    .tool-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .tool-link {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: auto;
+    }
+
+    .tool-link svg { transition: transform 0.2s; }
+    .tool-card:hover .tool-link svg { transform: translateX(3px); }
+
+    .coming-soon-card {
+      background: var(--bg-secondary);
+      border: 1.5px dashed var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .coming-soon-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .coming-soon-name {
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: -0.01em;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-section { background: var(--bg-secondary); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .step {
+      background: var(--bg-secondary);
+      padding: 40px 32px;
+    }
+
+    .step-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+
+    .step-title {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── ABOUT ── */
+    .about-section { background: var(--bg); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-text .section-sub { margin-bottom: 0; }
+
+    .about-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .pillar {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .pillar-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--brand-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pillar-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .pillar-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* ── CTA BANNER ── */
+    .cta-section {
+      background: var(--brand);
+      padding: 96px 24px;
+      text-align: center;
+    }
+
+    .cta-section .section-eyebrow { color: rgba(255,255,255,0.7); }
+    .cta-section .section-title { color: #fff; }
+    .cta-section .section-sub { color: rgba(255,255,255,0.75); max-width: 500px; margin: 0 auto 44px; }
+
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--brand);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 13px 28px;
+      border-radius: 980px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-white:hover { opacity: 0.92; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 48px 40px 32px;
+    }
+
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-top: 10px;
+      max-width: 260px;
+      line-height: 1.55;
+    }
+
+    .footer-links h4 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-links a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--brand); }
+
+    .footer-bottom {
+      max-width: 1080px;
+      margin: 32px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-bottom p {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      nav ul { display: none; }
+      .tool-card.featured { flex-direction: column; gap: 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      footer { padding: 40px 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="leftclick-logo.png" alt="LeftClick" height="53" style="display:block;" />
+    </a>
+    <ul>
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#tools" class="nav-cta">Browse Tools →</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-eyebrow">Simple AI & Automation Tools</span>
+    <h1>Click once.<br><span>Automate everything.</span></h1>
+    <p>LeftClick is a curated repository of practical guides and tools for teams adopting AI and automation — no fluff, just what works.</p>
+    <div class="hero-actions">
+      <a href="#tools" class="btn-primary">
+        Browse Tools
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#about" class="btn-secondary">Learn More</a>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <section class="tools-section" id="tools">
+    <div class="section-inner">
+      <p class="section-eyebrow">Tools & Guides</p>
+      <h2 class="section-title">Start here.</h2>
+      <p class="section-sub">Practical, step-by-step guides built for real teams. Each tool is production-tested and ready to use.</p>
+
+      <div class="tools-grid">
+
+        <!-- Featured: Basecamp CLI -->
+        <a href="tools/basecamp-install.html" class="tool-card featured">
+          <div>
+            <div class="tool-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div class="tool-tag">
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+              Live · CLI Tool
+            </div>
+            <p class="tool-name" style="margin-top:10px">Basecamp CLI Install</p>
+            <p class="tool-desc" style="margin-top:8px">Get the official Basecamp CLI installed correctly on your Mac via Homebrew — then connect it to Claude Code with a single command. Covers fresh installs, auth, and the <code style="font-size:13px;background:rgba(59,114,184,0.1);padding:1px 5px;border-radius:4px">basecamp setup claude</code> integration.</p>
+            <span class="tool-link" style="margin-top:20px">
+              Read the guide
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Coming soon cards -->
+        <div class="coming-soon-card">
+          <span class="coming-soon-label">Coming Soon</span>
+          <p class="coming-soon-name">Claude Code Setup Guide</p>
+          <p class="tool-desc">From install to first project — Claude Code configured for your team's workflow.</p>
+        </div>
+
+        <div class="coming-soon-card">
+          <span class="coming-soon-label">Coming Soon</span>
+          <p class="coming-soon-name">Webflow + AI Workflow</p>
+          <p class="tool-desc">Use Claude to generate and update Webflow pages programmatically via the MCP integration.</p>
+        </div>
+
+        <div class="coming-soon-card">
+          <span class="coming-soon-label">Coming Soon</span>
+          <p class="coming-soon-name">Basecamp Automation Scripts</p>
+          <p class="tool-desc">Pre-built scripts for recurring Basecamp tasks — auto-comments, card moves, and reporting.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how">
+    <div class="section-inner">
+      <p class="section-eyebrow">How It Works</p>
+      <h2 class="section-title">Built for humans,<br>powered by AI.</h2>
+      <p class="section-sub" style="margin-bottom:48px">Every tool on LeftClick follows the same simple pattern.</p>
+
+      <div class="steps">
+        <div class="step">
+          <p class="step-num">01</p>
+          <p class="step-title">Find your tool</p>
+          <p class="step-desc">Browse the repository and pick the guide that matches your task. Each one is purpose-built and to the point.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">02</p>
+          <p class="step-title">Follow the steps</p>
+          <p class="step-desc">Copy, paste, and run. No unnecessary context — just the exact commands and configuration you need.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">03</p>
+          <p class="step-title">Ship faster</p>
+          <p class="step-desc">Once it's running, you own it. Every tool is documented so your whole team can reproduce it.</p>
+        </div>
+        <div class="step">
+          <p class="step-num">04</p>
+          <p class="step-title">More tools added regularly</p>
+          <p class="step-desc">LeftClick grows as new AI tools become production-ready. Built from real workflows, not demos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about-section" id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="section-eyebrow">About LeftClick</p>
+          <h2 class="section-title">Less searching.<br>More doing.</h2>
+          <p class="section-sub">LeftClick exists because most AI tooling documentation is scattered, incomplete, or assumes you already know everything. These guides are written by practitioners, for practitioners.</p>
+        </div>
+        <div class="about-pillars">
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B72B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="pillar-title">Production-tested</p>
+              <p class="pillar-desc">Every guide comes from a real setup that was shipped and is actively used — not a tutorial environment.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B72B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div>
+              <p class="pillar-title">No fluff</p>
+              <p class="pillar-desc">Straight to the commands, configurations, and context that actually matter. You can read each guide in minutes.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B72B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div>
+              <p class="pillar-title">Team-ready</p>
+              <p class="pillar-desc">Written so anyone on your team can follow along — including the person who joins next month.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="section-inner" style="text-align:center">
+      <p class="section-eyebrow">Get Started</p>
+      <h2 class="section-title">Your first tool is ready.</h2>
+      <p class="section-sub">Start with the Basecamp CLI Install guide — the fastest way to connect Basecamp to Claude Code on your Mac.</p>
+      <a href="tools/basecamp-install.html" class="btn-white">
+        Open the Guide
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-bottom:0">
+          <img src="leftclick-logo.png" alt="LeftClick" height="45" style="display:block;" />
+        </a>
+        <p>Simple AI & automation tools for teams that want to move faster.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Tools</h4>
+        <ul>
+          <li><a href="tools/basecamp-install.html">Basecamp CLI Install</a></li>
+          <li><a href="#tools">View All Tools</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Site</h4>
+        <ul>
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LeftClick. theleftclick.com</p>
+      <p>Built with intention.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Install Basecamp for Claude</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --blue: #0071e3;
+      --blue-hover: #0077ed;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #86868b;
+      --bg: #ffffff;
+      --bg-secondary: #f5f5f7;
+      --bg-card: #fbfbfd;
+      --border: #d2d2d7;
+      --green: #34c759;
+      --code-bg: #1c1c1e;
+      --code-text: #f5f5f7;
+      --step-num: #0071e3;
+    }
+
+    body {
+      font-family: -apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+    }
+
+    nav span {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--bg-secondary);
+      text-align: center;
+      padding: 100px 24px 80px;
+    }
+
+    .hero-eyebrow {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: clamp(17px, 2vw, 21px);
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin: 0 auto 40px;
+      line-height: 1.5;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* BEFORE YOU START */
+    .prereq {
+      max-width: 720px;
+      margin: 72px auto;
+      padding: 0 24px;
+    }
+
+    .prereq h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .prereq-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .prereq-cards { grid-template-columns: 1fr; }
+    }
+
+    .prereq-card {
+      background: var(--bg-secondary);
+      border-radius: 18px;
+      padding: 28px;
+    }
+
+    .prereq-card .icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .prereq-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .prereq-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .prereq-card .shortcut {
+      display: inline-block;
+      margin-top: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: "SF Mono", "Menlo", monospace;
+      color: var(--text-primary);
+    }
+
+    /* STEPS */
+    .steps {
+      max-width: 720px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+
+    .steps-header {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 24px;
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 52px;
+      bottom: -24px;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: 17px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body {
+      padding-top: 10px;
+      min-width: 0;
+    }
+
+    .step-where {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg-secondary);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+    }
+
+    .step-where.terminal { color: #6e6e73; }
+    .step-where.browser { color: var(--blue); }
+    .step-where.claude { color: #8e44ad; }
+
+    .step h3 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .step p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .step p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .note {
+      font-size: 14px !important;
+      color: var(--text-tertiary) !important;
+      font-style: italic;
+    }
+
+    /* CODE BLOCKS */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 14px;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    .code-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .code-label span {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      font-family: "SF Mono", "Menlo", monospace;
+    }
+
+    .copy-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 6px;
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: -apple-system, sans-serif;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.18);
+      color: white;
+    }
+
+    .copy-btn.copied {
+      color: var(--green);
+    }
+
+    code {
+      display: block;
+      padding: 16px 20px;
+      font-family: "SF Mono", "Menlo", "Monaco", monospace;
+      font-size: 14px;
+      color: var(--code-text);
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    .verify {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 14px;
+    }
+
+    .verify-icon {
+      font-size: 16px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .verify-text {
+      font-size: 14px;
+      color: #166534;
+      line-height: 1.5;
+    }
+
+    .verify-text strong {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* DONE SECTION */
+    .done {
+      background: linear-gradient(135deg, #0071e3 0%, #42a5f5 100%);
+      text-align: center;
+      padding: 80px 24px;
+      color: white;
+    }
+
+    .done h2 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+    }
+
+    .done p {
+      font-size: 19px;
+      opacity: 0.85;
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.5;
+    }
+
+    .done-code {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 15px;
+      color: white;
+      margin-bottom: 32px;
+    }
+
+    .done-note {
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    /* TROUBLE */
+    .trouble {
+      max-width: 720px;
+      margin: 72px auto;
+      padding: 0 24px;
+    }
+
+    .trouble h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .trouble-card {
+      background: #fff8f0;
+      border: 1px solid #fcd9a0;
+      border-radius: 18px;
+      padding: 28px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .trouble-card .icon { font-size: 28px; flex-shrink: 0; }
+
+    .trouble-card p {
+      font-size: 16px;
+      color: #92400e;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* ── RESPONSIVE ── */
+
+    /* Tablet: 601px – 960px */
+    @media (max-width: 960px) {
+      .hero {
+        padding: 72px 32px 60px;
+      }
+
+      .prereq,
+      .steps,
+      .trouble {
+        padding: 0 32px;
+      }
+
+      .prereq {
+        margin: 56px auto;
+      }
+
+      .steps {
+        margin-bottom: 64px;
+      }
+
+      .trouble {
+        margin: 56px auto;
+      }
+
+      code {
+        font-size: 13px;
+      }
+    }
+
+    /* Mobile: ≤ 600px */
+    @media (max-width: 600px) {
+      /* Nav */
+      nav {
+        height: 48px;
+      }
+
+      nav span {
+        font-size: 15px;
+      }
+
+      /* Hero */
+      .hero {
+        padding: 56px 20px 48px;
+      }
+
+      .hero-eyebrow {
+        font-size: 12px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .hero-badges {
+        gap: 8px;
+      }
+
+      .badge {
+        font-size: 12px;
+        padding: 5px 11px;
+      }
+
+      /* Before you start */
+      .prereq {
+        margin: 48px auto;
+        padding: 0 20px;
+      }
+
+      .prereq h2,
+      .steps-header,
+      .trouble h2 {
+        font-size: 22px;
+      }
+
+      .prereq-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .prereq-card {
+        padding: 22px;
+        border-radius: 14px;
+      }
+
+      .prereq-card .icon {
+        font-size: 26px;
+        margin-bottom: 8px;
+      }
+
+      /* Steps */
+      .steps {
+        padding: 0 20px;
+        margin-bottom: 48px;
+      }
+
+      .steps-header {
+        margin-bottom: 24px;
+      }
+
+      .step {
+        grid-template-columns: 36px 1fr;
+        gap: 0 16px;
+        margin-bottom: 40px;
+      }
+
+      .step:not(:last-child)::before {
+        left: 17px;
+        top: 40px;
+      }
+
+      .step-num {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+      }
+
+      .step-body {
+        padding-top: 6px;
+      }
+
+      .step h3 {
+        font-size: 18px;
+      }
+
+      .step p {
+        font-size: 15px;
+      }
+
+      /* Code blocks — allow horizontal scroll on mobile */
+      .code-block {
+        border-radius: 12px;
+      }
+
+      code {
+        font-size: 12px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        white-space: pre;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .code-label {
+        padding: 8px 14px;
+      }
+
+      /* Verify boxes */
+      .verify {
+        padding: 12px 14px;
+        border-radius: 10px;
+      }
+
+      .verify-text {
+        font-size: 13px;
+      }
+
+      /* Done section */
+      .done {
+        padding: 56px 20px;
+      }
+
+      .done p {
+        font-size: 17px;
+      }
+
+      .done-code {
+        font-size: 13px;
+        padding: 12px 18px;
+        word-break: break-word;
+        white-space: normal;
+      }
+
+      /* Trouble */
+      .trouble {
+        margin: 48px auto;
+        padding: 0 20px;
+      }
+
+      .trouble-card {
+        padding: 20px;
+        border-radius: 14px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .trouble-card p {
+        font-size: 15px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span>Basecamp for Claude</span>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Setup Guide</p>
+    <h1>Basecamp<br>in Claude Code.</h1>
+    <p>Follow these steps to connect your Basecamp account to Claude. No technical experience needed.</p>
+    <div class="hero-badges">
+      <div class="badge"><span class="badge-dot"></span> Works on any Mac</div>
+      <div class="badge">About 10 minutes</div>
+      <div class="badge">5 simple steps</div>
+    </div>
+  </section>
+
+  <!-- BEFORE YOU START -->
+  <section class="prereq">
+    <h2>Before you start</h2>
+    <div class="prereq-cards">
+      <div class="prereq-card">
+        <div class="icon">🖥</div>
+        <h3>Terminal</h3>
+        <p>The black window where you type commands. You'll use this for most steps.</p>
+        <span class="shortcut">⌘ Space → "Terminal" → Enter</span>
+      </div>
+      <div class="prereq-card">
+        <div class="icon">🌐</div>
+        <h3>Web Browser</h3>
+        <p>Chrome or Safari. It will open automatically during the login step.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="steps">
+    <h2 class="steps-header">Installation steps</h2>
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-where terminal">⬛ Terminal</div>
+        <h3>Install Homebrew</h3>
+        <p>Homebrew is Mac's package manager — it lets you install software from Terminal. Copy and paste the line below, then hit <strong>Enter</strong>.</p>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+        </div>
+        <p class="note">It will ask for your Mac password. Type it and hit Enter — you won't see the characters appear, that's normal. Wait until you see the $ symbol again before moving on.</p>
+        <div class="verify">
+          <span class="verify-icon">✅</span>
+          <div class="verify-text">
+            <strong>Already installed?</strong>
+            It will say "Homebrew is already installed" and stop. That's fine — move to Step 2.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-where terminal">⬛ Terminal</div>
+        <h3>Install Node.js</h3>
+        <p>Node.js gives you a tool called <strong>npx</strong> that's needed later. Copy and paste this, then hit <strong>Enter</strong>.</p>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>brew install node</code>
+        </div>
+        <div class="verify">
+          <span class="verify-icon">✅</span>
+          <div class="verify-text">
+            <strong>Check it worked:</strong>
+            Type <code style="background:#e8f5e9;color:#166534;padding:1px 6px;border-radius:4px;font-size:13px;">node --version</code> and hit Enter. You should see a version number like v25.0.0.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-where terminal">⬛ Terminal</div>
+        <h3>Install the Basecamp CLI</h3>
+        <p>This installs the Basecamp command-line tool. Run these <strong>one at a time</strong> — paste the first, hit Enter, wait for it to finish, then do the second.</p>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal — run first</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>brew tap basecamp/tap</code>
+        </div>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal — run second</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>brew install --cask basecamp/tap/basecamp</code>
+        </div>
+        <div class="verify">
+          <span class="verify-icon">✅</span>
+          <div class="verify-text">
+            <strong>Check it worked:</strong>
+            Type <code style="background:#e8f5e9;color:#166534;padding:1px 6px;border-radius:4px;font-size:13px;">basecamp --version</code> and hit Enter. You should see: basecamp version 0.7.2 (or newer).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-where browser">🌐 Terminal + Browser</div>
+        <h3>Log into Basecamp</h3>
+        <p>This links your Basecamp account to the CLI. Paste the command below and hit <strong>Enter</strong> — your browser will open automatically.</p>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>basecamp auth login</code>
+        </div>
+        <p>In the browser: log in with your Basecamp username and password, then click <strong>Allow Access</strong>. Come back to Terminal when done.</p>
+        <div class="verify">
+          <span class="verify-icon">✅</span>
+          <div class="verify-text">
+            <strong>You should see:</strong>
+            "Authentication successful!" in green in Terminal.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-where claude">◆ Terminal</div>
+        <h3>Connect to Claude Code</h3>
+        <p>This final command links everything together and installs the Basecamp skill directly into Claude Code.</p>
+        <div class="code-block">
+          <div class="code-label">
+            <span>Terminal</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+          <code>basecamp setup claude</code>
+        </div>
+        <div class="verify">
+          <span class="verify-icon">✅</span>
+          <div class="verify-text">
+            <strong>You should see:</strong>
+            "Claude Code plugin installed" in green.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- DONE -->
+  <section class="done">
+    <h2>You're all set.</h2>
+    <p>Close Claude Code completely and reopen it. Then try asking:</p>
+    <div class="done-code">"How many open to-dos do I have in Basecamp?"</div>
+    <p class="done-note">Claude will pull your real Basecamp data in seconds.</p>
+  </section>
+
+  <!-- TROUBLE -->
+  <section class="trouble">
+    <h2>Something went wrong?</h2>
+    <div class="trouble-card">
+      <div class="icon">🛟</div>
+      <p>Take a screenshot of what you see in Terminal and share it with Claude. Include the exact error message text so it can help you fix it right away.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Basecamp CLI by 37signals &nbsp;·&nbsp; Guide created with Claude Code</p>
+  </footer>
+
+  <script>
+    function copyCode(btn) {
+      const block = btn.closest('.code-block');
+      const code = block.querySelector('code').innerText.trim();
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>
